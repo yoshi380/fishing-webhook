@@ -1,32 +1,10 @@
-require('dotenv').config();
-const express = require('express');
-const line = require('@line/bot-sdk');
+app.post('/webhook', (req, res) => {
+  const events = req.body.events;
 
-const config = {
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.LINE_CHANNEL_SECRET,
-};
+  if (events.length > 0) {
+    const userId = events[0].source.userId;
+    console.log("👤 USER_ID を取得:", userId);
+  }
 
-const app = express();
-
-const client = new line.Client(config);
-
-app.post('/webhook', line.middleware(config), (req, res) => {
-  Promise
-    .all(req.body.events.map(event => {
-      if (event.type === 'message' && event.message.type === 'text') {
-        return client.replyMessage(event.replyToken, {
-          type: 'text',
-          text: `「${event.message.text}」って言ったね！`,
-        });
-      }
-    }))
-    .then(() => res.end())
-    .catch(err => {
-      console.error(err);
-      res.status(500).end();
-    });
+  res.sendStatus(200);
 });
-
-app.listen(3000);
-console.log('Server running on port 3000');
