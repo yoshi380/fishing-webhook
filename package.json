@@ -1,0 +1,13 @@
+{
+  "name": "fishing-bot",
+  "version": "1.0.0",
+  "description": "Fishing weather notification bot",
+  "main": "webhook.js",
+  "scripts": {
+    "start": "node webhook.js"
+  },
+  "dependencies": {
+    "@line/bot-sdk": "^7.5.0",
+    "axios": "^1.6.7"
+  }
+}
